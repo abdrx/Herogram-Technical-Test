@@ -1,23 +1,20 @@
 const fastify = require('fastify')({ logger: true })
-require('dotenv').config()
-const authRoutes = require('./routes/auth.js')
-const pollRoutes = require('./routes/poll.js')
+const cors = require('@fastify/cors')
+const { createSchema } = require('./db/schemaManager')
+const pollRoutes = require('./routes/pollRoutes')
+const voteRoutes = require('./routes/voteService')
 
-fastify.register(require('fastify-jwt'), {
-  secret: process.env.JWT_SECRET
-})
+const start = async () => {
+  await fastify.register(cors, {
+    origin: 'http://localhost:5173'
+  })
 
-fastify.decorate("authenticate", async function(request, reply) {
-  try {
-    await request.jwtVerify()
-  } catch (err) {
-    reply.send(err)
-  }
-})
+  await createSchema()
 
-fastify.register(authRoutes)
-fastify.register(pollRoutes)
+  fastify.register(pollRoutes)
+  fastify.register(voteRoutes)
 
-fastify.listen({ port: 3000 }, err => {
-  if (err) throw err
-})
+  await fastify.listen({ port: 3000, host: '0.0.0.0' })
+}
+
+start()

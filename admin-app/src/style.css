@@ -1,0 +1,27 @@
+
+.sidebar      { width:220px;background:#fafbff;padding:1rem 0;box-shadow:2px 0 4px rgba(0,0,0,.05) }
+.logo         { margin:0 1rem 1.2rem;font-size:1.4rem;font-weight:700;color:#5469d4 }
+.nav-link     { display:block;padding:.55rem 1rem;color:#333;text-decoration:none;border-left:4px solid transparent }
+.nav-link:hover { background:#f0f2ff }
+.nav-link.active{ background:#e6e9ff;font-weight:600;border-color:#5469d4 }
+
+.topbar       { height:50px;background:#5469d4;color:#fff;display:flex;align-items:center;padding:0 1.2rem;font-weight:600 }
+.content      { flex:1;overflow:auto;padding:2rem }
+
+.layout       { display:flex;height:100vh }
+.main         { flex:1;display:flex;flex-direction:column }
+
+
+.poll-page    { display:flex;gap:2rem;align-items:flex-start;flex-wrap:wrap }
+.poll-list    { flex:1;min-width:300px }
+
+table         { width:100%;border-collapse:collapse;font-size:.9rem }
+th,td         { border:1px solid #dde1f8;padding:.5rem .6rem;text-align:left }
+th            { background:#f5f6fa }
+
+button        { padding:.4rem .8rem;border:none;border-radius:4px;cursor:pointer;font-size:.85rem }
+.btn          { background:#5469d4;color:#fff }
+.btn.danger   { background:#d45555 }
+.btn.outline  { background:#fff;color:#5469d4;border:1px solid #5469d4 }
+
+button + button { margin-left:.4rem }
