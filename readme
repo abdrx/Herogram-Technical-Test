@@ -1,0 +1,167 @@
+# HeroGram Technical Test
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+A technical test implementation consisting of three applications for poll management:
+
+1. **API Server**: Node.js backend using Fastify and PostgreSQL.
+2. **Admin App**: Vite-powered frontend for creating and managing polls.
+3. **Voter Web App**: React.js frontend for users to participate in polls.
+
+---
+
+## Table of Contents
+
+* [Architecture](#architecture)
+* [Prerequisites](#prerequisites)
+* [Setup](#setup)
+
+  * [Database](#database)
+  * [Environment Variables](#environment-variables)
+  * [API Server](#api-server)
+  * [Admin App](#admin-app)
+  * [Voter Web App](#voter-web-app)
+* [Usage](#usage)
+* [Troubleshooting](#troubleshooting)
+* [Contributing](#contributing)
+* [License](#license)
+
+---
+
+## Architecture
+
+```text
+┌──────────────────┐     ┌──────────────┐      ┌───────────────┐
+│   Admin App      │     │  API Server  │      │ Voter Web App │
+│ (Vite + React)   │ ⇄   │ (Fastify)    │ ⇄   │ (React)       │
+└──────────────────┘     └──────────────┘      └───────────────┘
+                           │
+                           ▼
+                     PostgreSQL
+```
+
+* **API Server**: The core service implemented in Node.js/Fastify; directly interacts with PostgreSQL.
+* **Admin App**: Frontend for managing polls; makes HTTP requests only to the API Server (no direct DB access).
+* **Voter Web App**: Frontend for end-users to participate in polls; communicates exclusively with the API Server (no direct DB access).
+
+---
+
+## Prerequisites
+
+* **Node.js** v14+
+* **npm** (bundled with Node.js) or **Yarn**
+* **PostgreSQL** v12+
+* **Git**
+
+---
+
+## Setup
+
+### 1. Database
+
+1. Install or run PostgreSQL (locally or via Docker).
+2. Create a database and user:
+
+   ```bash
+   sudo -u postgres psql
+   CREATE DATABASE herogram;
+   CREATE USER herogram_user WITH ENCRYPTED PASSWORD 'your_password';
+   GRANT ALL PRIVILEGES ON DATABASE herogram TO herogram_user;
+   \q
+   ```
+3. (Optional) Initialize schema if provided:
+
+   ```bash
+   psql -U herogram_user -d herogram -f nodejs/node-app/db/init.sql
+   ```
+
+### 2. Environment Variables
+
+Copy example env files and update credentials:
+
+* **API Server** (`nodejs/node-app/.env`):
+
+  ```ini
+  DB_HOST=localhost
+  DB_PORT=5432
+  DB_USER=herogram_user
+  DB_PASSWORD=your_password
+  DB_NAME=herogram
+  PORT=3000
+  ```
+
+* **Admin App** (`admin-app/.env.local`):
+
+  ```ini
+  VITE_API_URL=http://localhost:3000
+  ```
+
+* **Voter Web App** (`react-voterWebApp/web-app/.env`):
+
+  ```ini
+  REACT_APP_API_URL=http://localhost:3000
+  ```
+
+### 3. Install & Run
+
+Open three terminals/tabs:
+
+```bash
+# Terminal 1: API Server
+cd nodejs/node-app
+npm install
+npm run start
+```
+
+```bash
+# Terminal 2: Admin App
+cd admin-app
+npm install
+npm run dev
+```
+
+```bash
+# Terminal 3: Voter Web App
+cd react-voterWebApp/web-app
+npm install
+npm start
+```
+
+* **API Server** will listen on `http://localhost:3000`.
+* **Admin App** will run at `http://localhost:5173` (Vite).
+* **Voter Web App** will run at `http://localhost:3001` (or default CRA port).
+
+---
+
+## Usage
+
+1. Visit the **Admin App** to create a new poll and questions.
+2. Activate the poll to open voting.
+3. Open the **Voter Web App** in a separate browser or incognito window.
+4. Enter your name and vote through each question.
+5. Monitor real-time vote counts via the API’s SSE endpoint or Admin App UI.
+
+---
+
+## Troubleshooting
+
+* Ensure PostgreSQL service is running and credentials match `.env`.
+* Verify ports `3000`, `5173`, and `3001` are not in use.
+* Check console logs for errors and stack traces.
+* Run `npm run lint` (in each app) to catch code issues.
+
+---
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/YourFeature`)
+3. Commit your changes (`git commit -m 'Add some feature'`)
+4. Push to the branch (`git push origin feature/YourFeature`)
+5. Open a Pull Request
+
+---
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
