@@ -1,4 +1,10 @@
-const { createPoll, setStatus, deletePoll, getActivePolls, getPoll } = require('../Service/pollManagement')
+const {
+  createPoll,
+  setStatus,
+  deletePoll,
+  getActivePolls,
+  getPoll
+} = require('../Service/pollManagement')
 
 module.exports = async fastify => {
   fastify.post('/poll', async (req, reply) => {

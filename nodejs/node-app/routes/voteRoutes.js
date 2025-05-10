@@ -1,12 +1,9 @@
-const { v4: uuidv4 } = require('uuid')
-const pool = require('../db/dbService')
+const { submitVote } = require('../Service/voteService')
 
-async function submitVote (optionId, voter) {
-  const id = uuidv4()
-  await pool.query(
-    'insert into votes(id,option_id,voter) values($1,$2,$3)',
-    [id, optionId, voter])
-  return id
+module.exports = async fastify => {
+  fastify.post('/vote', async (req, reply) => {
+    const { voter, optionId } = req.body
+    await submitVote(voter, optionId)
+    reply.code(201).send({})
+  })
 }
-
-module.exports = { submitVote }
