@@ -1,0 +1,171 @@
+{
+  "info": {
+    "name": "Node Polls API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Postman collection for Node.js Polls and Voting API"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Create Poll",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"My Poll Title\",\n  \"questions\": [\n    {\n      \"text\": \"What is your favorite color?\",\n      \"options\": [\n        { \"text\": \"Red\" },\n        { \"text\": \"Blue\" },\n        { \"text\": \"Green\" }\n      ]\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/poll",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "poll"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Active Polls",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/poll/active",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "poll",
+            "active"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Poll by ID",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/poll/:id",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "poll",
+            ":id"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Activate Poll",
+      "request": {
+        "method": "PATCH",
+        "url": {
+          "raw": "{{baseUrl}}/poll/:id/activate",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "poll",
+            ":id",
+            "activate"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Deactivate Poll",
+      "request": {
+        "method": "PATCH",
+        "url": {
+          "raw": "{{baseUrl}}/poll/:id/deactivate",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "poll",
+            ":id",
+            "deactivate"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Delete Poll",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "{{baseUrl}}/poll/:id",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "poll",
+            ":id"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Stream Poll Results",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "text/event-stream"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/poll/:id/stream",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "poll",
+            ":id",
+            "stream"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Submit Vote",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"voter\": \"john_doe\",\n  \"optionId\": 1\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/vote",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "vote"
+          ]
+        }
+      }
+    }
+  ]
+}
