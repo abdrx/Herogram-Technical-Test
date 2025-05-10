@@ -12,11 +12,15 @@ export const getPollById = async (id) => {
   return res.data
 }
 
-export const submitVote = async (questionId, optionId, voterName) => {
-  const res = await axios.post(`${API}/vote`, {
-    questionId,
-    optionId,
-    voterName
-  })
-  return res.data
+export const voteOnPoll = async (voter, optionId) => {
+  const response = await axios.post(
+    'http://localhost:3000/vote',
+    { voter, optionId },
+    {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
+      }
+    }
+  )
+  return response.data
 }

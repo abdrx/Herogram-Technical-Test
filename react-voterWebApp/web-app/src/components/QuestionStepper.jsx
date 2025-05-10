@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getPollById, submitVote } from '../api/polls'
+import { getPollById, voteOnPoll } from '../api/polls'
 
 export default function QuestionStepper({ poll, userName }) {
   const [questions, setQuestions] = useState([])
@@ -10,9 +10,13 @@ export default function QuestionStepper({ poll, userName }) {
   }, [poll.id])
 
   const handleVote = async (optionId) => {
-    const question = questions[currentIndex]
-    await submitVote(question.id, optionId, userName)
-    setCurrentIndex(currentIndex + 1)
+    try {
+      await voteOnPoll(userName, optionId)
+      setCurrentIndex(currentIndex + 1)
+    } catch (err) {
+      console.error('Vote failed:', err)
+      alert('Something went wrong while submitting your vote.')
+    }
   }
 
   if (questions.length === 0) return <p>Loading questions...</p>
