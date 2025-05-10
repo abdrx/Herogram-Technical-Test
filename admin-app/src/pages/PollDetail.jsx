@@ -55,7 +55,7 @@ export default function PollDetail () {
   }, [poll, pollId])
 
   if (loading) return <p>Loading …</p>
-  if (!poll)   return <p>Poll not found.</p>
+  if (!poll) return <p>Poll not found.</p>
 
   return (
     <div style={{ maxWidth: '700px' }}>
@@ -67,7 +67,9 @@ export default function PollDetail () {
         <section key={q.id} style={{ marginBottom: '1.4rem' }}>
           <h4>{i + 1}. {q.text}</h4>
           <table style={{ width: '100%' }}>
-            <thead><tr><th>Option</th><th>Votes</th></tr></thead>
+            <thead>
+              <tr><th>Option</th><th>Votes</th></tr>
+            </thead>
             <tbody>
               {q.options.map(o => (
                 <tr key={o.id}>
