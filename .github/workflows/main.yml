@@ -1,4 +1,4 @@
-name: Main - Node Backend with Docker
+name: CI - Node.js + Docker
 
 on:
   push:
@@ -16,12 +16,12 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v3.5.3
 
     - name: Set up Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v3.8.1
       with:
-        node-version: '18'
+        node-version: '20'
         cache: 'npm'
 
     - name: Install Dependencies
@@ -32,10 +32,10 @@ jobs:
 
     - name: Upload Coverage Report
       if: success()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v3.1.3
       with:
         name: coverage-report
-        path: nodejs/node-app/coverage
+        path: coverage
 
     - name: Build Docker Image
       run: docker build -t herogram-poll-app .
