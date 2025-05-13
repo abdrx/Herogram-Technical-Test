@@ -1,4 +1,4 @@
-name: CI - Node.js + Docker
+name: CI – Node.js + Docker
 
 on:
   push:
@@ -12,30 +12,30 @@ jobs:
 
     defaults:
       run:
-        working-directory: nodejs/node-app
+        working-directory: nodejs/node-app   # ← change if your backend lives elsewhere
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v3
+    - name: 📥  Checkout source
+      uses: actions/checkout@v4
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
+    - name: 🟢  Set up Node.js
+      uses: actions/setup-node@v4
       with:
-        node-version: '20'
+        node-version: '20'      # change to 22 when GitHub supports it
         cache: 'npm'
 
-    - name: Install Dependencies
+    - name: 📦  Install dependencies
       run: npm ci
 
-    - name: Run Tests with Coverage
+    - name: 🧪  Run tests with coverage
       run: npm test -- --coverage
 
-    - name: Upload Coverage Report
+    - name: 📤  Upload coverage artifact
       if: success()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: coverage-report
-        path: coverage
+        path: coverage          # folder created by Jest / Vitest
 
-    - name: Build Docker Image
+    - name: 🐳  Build Docker image
       run: docker build -t herogram-poll-app .
