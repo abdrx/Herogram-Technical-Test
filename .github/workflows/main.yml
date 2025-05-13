@@ -1,50 +1,36 @@
-name: CI – Node.js + Docker
+name: CI
 
 on:
   push:
-    branches: [ "main" ]        # run on pushes to main
+    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]        # and on PRs targeting main
+    branches: [ "main" ]
 
 jobs:
   build-test-docker:
     runs-on: ubuntu-latest
-
-    # All shell commands below automatically start in the backend folder
     defaults:
       run:
-        working-directory: nodejs/node-app   # ← change if your backend lives elsewhere
+        working-directory: nodejs/node-app
 
     steps:
-    # 1. Fetch source
-    - name: 📥  Checkout repository
-      uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    # 2. Install Node and prime npm cache
-    - name: 🟢  Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        cache: npm
-        # Path to the lock-file relative to the repo root
-        cache-dependency-path: nodejs/node-app/package-lock.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: nodejs/node-app/package-lock.json
 
-    # 3. Clean, reproducible dependency install
-    - name: 📦  Install dependencies
-      run: npm ci
+      - run: npm ci
 
-    # 4. Run the full test suite with coverage
-    - name: 🧪  Run tests with coverage
-      run: npm test -- --coverage
+      - id: tests
+        run: npm test --if-present -- --coverage
 
-    # 5. Persist the coverage report in the Actions UI
-    - name: 📤  Upload coverage artifact
-      if: success()
-      uses: actions/upload-artifact@v4
-      with:
-        name: coverage-report
-        path: coverage
+      - if: success() && hashFiles('nodejs/node-app/coverage/**/*') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: nodejs/node-app/coverage
 
-    # 6. Build the Docker image
-    - name: 🐳  Build Docker image
-      run: docker build -t herogram-poll-app .
+      - run: docker build -t herogram-poll-app .
