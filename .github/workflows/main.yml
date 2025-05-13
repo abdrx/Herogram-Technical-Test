@@ -1,0 +1,41 @@
+name: Main - Node Backend with Docker
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-test-docker:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: nodejs/node-app
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install Dependencies
+      run: npm ci
+
+    - name: Run Tests with Coverage
+      run: npm test -- --coverage
+
+    - name: Upload Coverage Report
+      if: success()
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-report
+        path: nodejs/node-app/coverage
+
+    - name: Build Docker Image
+      run: docker build -t herogram-poll-app .
